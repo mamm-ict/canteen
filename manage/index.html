@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <meta charset="utf-8">
+    <title>MAMM Canteen Order Management</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico">
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: sans-serif;
+      }
+      
+      html, body {
+        margin: 0px;
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+
+      iframe {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <script defer>
+      window.onload = () => {
+        let url = "https://script.google.com/macros/s/AKfycbyR7GtiMyRs-L2SmcUUBNkGrebkqkNjzzFrI-7s6f0bSH-Ox3A45CSkqlagoosbwQ/exec?path=orders";
+
+        if (url) {
+          document.body.innerHTML = "";
+          let iframe = document.createElement("iframe");
+          iframe.src = url;
+          document.body.appendChild(iframe);
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <noscript>You must enable Javascript</noscript>
+    <span>LOADING...</span>
+  </body>
+</html>
