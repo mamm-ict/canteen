@@ -58,11 +58,14 @@
     provider.addScope("https://www.googleapis.com/auth/userinfo.email");
     const auth = getAuth();
 
-    window.onload = async () => {
-      let user = auth.currentUser;
+    window.onload = () => {
       let hasError = null;
 
-      await onAuthStateChanged(auth, (u) => user = u);
+      onAuthStateChanged(auth, (user) => authenticate(user));
+    }
+
+    let authenticate = async (user) => {
+      let hasError = null;
 
       if (!user) {
         localStorage.removeItem("user-email");
@@ -105,7 +108,7 @@
       let curUser = localStorage.getItem("user-email");
 
       if (curUser) {
-        url += "?user" + curUser;
+        url += "?user=" + curUser;
       }
 
       if (url) {
