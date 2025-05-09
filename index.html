@@ -60,7 +60,7 @@
 
     window.onload = async () => {
       let user = auth.currentUser;
-      let hasError = false;
+      let hasError = null;
 
       if (!user) {
         localStorage.removeItem("user-email");
@@ -83,12 +83,15 @@
             // The AuthCredential type that was used.
             const credential = GoogleAuthProvider.credentialFromError(error);
             //alert("Sign in failed. Please try again.");
-            hasError = true;
+            hasError = {
+              "code": errorCode,
+              "message": errorMessage
+            };
             // ...
           });
 
           if (hasError) {
-            document.body.innerHTML = "<span>Sign in failed. Please try again.</span>";
+            document.body.innerHTML = "<p>Sign in failed (" + hasError.code + "). Please try again.<br>" + hasError.message +"</p>";
             return;
           }
       } else {
