@@ -1,50 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta name="viewport" content="initial-scale=1, width=device-width">
-    <meta charset="utf-8">
-    <title>MAMM Canteen Ordering System</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="favicon.ico">
-    <style>
-      * {
-        box-sizing: border-box;
-        font-family: sans-serif;
-      }
-      
-      html, body {
-        margin: 0px;
-        width: 100%;
-        height: 100%;
+
+<head>
+  <meta name="viewport" content="initial-scale=1, width=device-width">
+  <meta charset="utf-8">
+  <title>MAMM Canteen Ordering System</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="favicon.ico">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
+
+    html,
+    body {
+      margin: 0px;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+  <script type="module" defer>
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAQGhwmq1qr98U-A8VKs41oTmJZjU0926w",
+      authDomain: "mamm-user-auth.firebaseapp.com",
+      projectId: "mamm-user-auth",
+      storageBucket: "mamm-user-auth.firebasestorage.app",
+      messagingSenderId: "833190418226",
+      appId: "1:833190418226:web:4a8a362e3c326cc07fa92b"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
+  <script type="module" defer>
+    import { getAuth, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js';
+
+    const provider = new GoogleAuthProvider();
+    provider.addScope("https://www.googleapis.com/auth/userinfo.email");
+    const auth = getAuth();
+
+    window.onload = async () => {
+      let user = auth.currentUser;
+      let hasError = false;
+
+      if (!user) {
+        localStorage.removeItem("user-email");
+        await signInWithPopup(auth, provider)
+          .then((result) => {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            // The signed-in user info.
+            user = result.user;
+            localStorage.setItem("user-email", user.email);
+            // IdP data available using getAdditionalUserInfo(result)
+            // ...
+          }).catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.customData.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            //alert("Sign in failed. Please try again.");
+            hasError = true;
+            // ...
+          });
+
+          if (hasError) {
+            document.body.innerHTML = "<span>Sign in failed. Please try again.</span>";
+            return;
+          }
+      } else {
+        localStorage.setItem("user-email", user.email);
       }
 
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
+      let url = "https://script.google.com/macros/s/AKfycbyR7GtiMyRs-L2SmcUUBNkGrebkqkNjzzFrI-7s6f0bSH-Ox3A45CSkqlagoosbwQ/exec";
+
+      let curUser = localStorage.getItem("user-email");
+
+      if (curUser) {
+        url += "?user" + curUser;
       }
 
-      iframe {
-        width: 100%;
-        height: 100%;
+      if (url) {
+        document.body.innerHTML = "";
+        let iframe = document.createElement("iframe");
+        iframe.src = url;
+        document.body.appendChild(iframe);
       }
-    </style>
-    <script defer>
-      window.onload = () => {
-        let url = "https://script.google.com/macros/s/AKfycbyR7GtiMyRs-L2SmcUUBNkGrebkqkNjzzFrI-7s6f0bSH-Ox3A45CSkqlagoosbwQ/exec";
+    }
+  </script>
+</head>
 
-        if (url) {
-          document.body.innerHTML = "";
-          let iframe = document.createElement("iframe");
-          iframe.src = url;
-          document.body.appendChild(iframe);
-        }
-      }
-    </script>
-  </head>
-  <body>
-    <noscript>You must enable Javascript</noscript>
-    <span>LOADING...</span>
-  </body>
+<body>
+  <noscript>You must enable Javascript</noscript>
+  <span>LOADING...</span>
+</body>
+
 </html>
