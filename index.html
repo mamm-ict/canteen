@@ -52,7 +52,7 @@
     const app = initializeApp(firebaseConfig);
   </script>
   <script type="module" defer>
-    import { getAuth, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js';
+    import { onAuthStateChanged, getAuth, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js';
 
     const provider = new GoogleAuthProvider();
     provider.addScope("https://www.googleapis.com/auth/userinfo.email");
@@ -61,6 +61,8 @@
     window.onload = async () => {
       let user = auth.currentUser;
       let hasError = null;
+
+      await onAuthStateChanged(auth, (u) => user = u);
 
       if (!user) {
         localStorage.removeItem("user-email");
