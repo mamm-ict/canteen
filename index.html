@@ -59,7 +59,10 @@
     const auth = getAuth();
 
     window.onload = () => {
-      let hasError = null;
+      if (navigator.userAgent.indexOf("CriOS") < 0 && navigator.userAgent.indexOf("FxiOS") < 0 && navigator.userAgent.indexOf("iPhone") > -1) {
+        document.body.innerHTML = "<span>This browser is unsupported. We recommend using Chrome instead.</span>"
+        return;
+      }
 
       onAuthStateChanged(auth, (user) => authenticate(user));
     }
