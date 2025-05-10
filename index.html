@@ -23,10 +23,10 @@
     body {
       display: flex;
       flex-direction: column;
-      gap: 16px;
       justify-content: center;
       align-items: center;
       text-align: center;
+      gap: 16px;
     }
 
     button {
@@ -70,23 +70,24 @@
         return;
       }
 
+      document.querySelector("#signin").addEventListener("click", () => signIn());
       onAuthStateChanged(auth, (user) => authenticate(user));
     }
 
-    let authenticate = (user) => {
+    let authenticate = async (user) => {
       let hasError = null;
 
       if (!user) {
         localStorage.removeItem("user-email");
-        document.body.innerHTML = "<span>Please sign in first.</span><button id='signin'>SIGN IN</button>";
-        document.querySelector("#signin").addEventListener("click", () => {
-          signIn();
-        });
         return;
       } else {
         localStorage.setItem("user-email", user.email);
       }
 
+      display();
+    }
+
+    let display = () => {
       let url = "https://script.google.com/macros/s/AKfycbyR7GtiMyRs-L2SmcUUBNkGrebkqkNjzzFrI-7s6f0bSH-Ox3A45CSkqlagoosbwQ/exec";
 
       let curUser = localStorage.getItem("user-email");
@@ -104,6 +105,7 @@
     }
 
     let signIn = async () => {
+      let hasError = {};
       let user = null;
 
       await signInWithPopup(auth, provider)
@@ -116,7 +118,9 @@
           localStorage.setItem("user-email", user.email);
           // IdP data available using getAdditionalUserInfo(result)
           // ...
+          display();
         }).catch((error) => {
+          console.log(error);
           // Handle Errors here.
           const errorCode = error.code;
           const errorMessage = error.message;
@@ -129,22 +133,20 @@
             "code": errorCode,
             "message": errorMessage
           };
-          // ...
         });
 
       if (hasError) {
         document.body.innerHTML = "<p>Sign in failed (" + hasError.code + "). Please try again.<br>" + hasError.message + "</p>";
         return;
       }
-
-      authenticate(user);
     }
   </script>
 </head>
 
 <body>
   <noscript>You must enable Javascript</noscript>
-  <span>LOADING...</span>
+  <span>Please login first.</span>
+  <button id="signin">LOGIN</button>
 </body>
 
 </html>
