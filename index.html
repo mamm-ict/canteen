@@ -30,6 +30,7 @@
     }
 
     button {
+      display: none;
       padding: 16px;
     }
 
@@ -79,6 +80,7 @@
 
       if (!user) {
         localStorage.removeItem("user-email");
+        document.querySelector("#signin").style.display = "block";
         return;
       } else {
         localStorage.setItem("user-email", user.email);
