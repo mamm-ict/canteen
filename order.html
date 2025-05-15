@@ -34,6 +34,10 @@
   </style>
   <script defer>
     window.onload = () => {
+      window.addEventListener("popstate", () => {
+        location.replace("https://mamm-ict.github.io/canteen/");
+      });
+      
       let url = "https://script.google.com/macros/s/AKfycbyR7GtiMyRs-L2SmcUUBNkGrebkqkNjzzFrI-7s6f0bSH-Ox3A45CSkqlagoosbwQ/exec?path=place-order";
 
       let curUser = localStorage.getItem("user-email");
