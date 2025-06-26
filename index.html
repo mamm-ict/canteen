@@ -66,7 +66,7 @@
     const auth = getAuth();
 
     window.onload = () => {
-      if (navigator.userAgent.indexOf("CriOS") < 0 && navigator.userAgent.indexOf("FxiOS") < 0 && navigator.userAgent.indexOf("iPhone") > -1) {
+      if ((navigator.userAgent.indexOf("CriOS") < 0 && navigator.userAgent.indexOf("FxiOS") < 0 && navigator.userAgent.indexOf("iPhone") > -1) || navigator.userAgent.toString().includes("HeyTapBrowser") || navigator.userAgent.toString().includes("VivoBrowser")) {
         document.body.innerHTML = "<span>This browser is unsupported. We recommend using Chrome instead.</span>"
         return;
       }
