@@ -67,7 +67,14 @@
 
     window.onload = () => {
       if ((navigator.userAgent.indexOf("CriOS") < 0 && navigator.userAgent.indexOf("FxiOS") < 0 && navigator.userAgent.indexOf("iPhone") > -1) || navigator.userAgent.toString().includes("HeyTapBrowser") || navigator.userAgent.toString().includes("VivoBrowser") || navigator.userAgent.toString().includes("SamsungBrowser")) {
-        document.body.innerHTML = "<span>This browser is unsupported. We recommend using Chrome instead.</span>"
+        document.body.innerHTML = "<p>This browser is unsupported. We recommend using Chrome instead.</p>"
+
+        if (navigator.userAgent.toString().includes("iPhone OS") || navigator.userAgent.toString().includes("iPad OS")) {
+          document.body.innerHTML += "<p>Click <a href='https://apps.apple.com/us/app/google-chrome/id535886823'>here</a> to install Chrome.</p>";
+        } else if (navigator.userAgent.toString().includes("Android")) {
+          document.body.innerHTML += "<p>Click <a href='https://play.google.com/store/apps/details?id=com.android.chrome'>here</a> to install Chrome.</p>";
+        }
+        
         return;
       }
 
